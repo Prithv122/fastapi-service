@@ -31,8 +31,9 @@ data/processed/
 *.sqlite3
 !data/sample/**
 
-# Models & artifacts
-models/
+# Models & artifacts (root-level only -- a bare `models/` would also match an app's own
+# src/<pkg>/models/ package, e.g. this project's SQLAlchemy models)
+/models/
 *.pt
 *.pth
 *.onnx
