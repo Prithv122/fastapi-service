@@ -30,7 +30,7 @@ enforced instead of trusted to whatever wrote the last edit.
 | | |
 |---|---|
 | Source | Invented for this project — no real portfolio or research data is included |
-| Size | 4 NSE-style tickers (ARVINDTECH, BHARATGREEN, NEXUSFIN, ORBITDEF), ~10 research notes, 4 trade setups, 4 trades — see `scripts/seed.py` |
+| Size | 4 NSE-style tickers (ARVINDTECH, BHARATGREEN, NEXUSFIN, ORBITDEF), 6 research notes (NEXUSFIN alone has 3, showing the append-only history), 4 trade setups, 4 trades — see `scripts/seed.py` |
 | Licence | N/A (synthetic) |
 | Refresh | One-off seed script, re-runnable against a clean database |
 
