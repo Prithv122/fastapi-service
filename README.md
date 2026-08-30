@@ -6,7 +6,8 @@
 
 [![CI](https://github.com/Prithv122/fastapi-service/actions/workflows/ci.yml/badge.svg)](https://github.com/Prithv122/fastapi-service/actions/workflows/ci.yml)
 
-**Live demo:** not deployed yet — runs locally against a free-tier Neon Postgres database.
+**Live demo:** [fastapi-service-alx5.onrender.com/docs](https://fastapi-service-alx5.onrender.com/docs)
+(Render free tier — sleeps when idle, first request may take ~30s to wake it up).
 **Stack:** Python 3.13 · FastAPI · Pydantic v2 · SQLAlchemy 2.0 (async) · psycopg 3 ·
 Alembic · Neon Postgres · PyJWT + bcrypt · pytest + pytest-asyncio + httpx · Docker ·
 GitHub Actions · uv.
@@ -73,6 +74,7 @@ Alembic owns schema evolution independently of the app's own runtime.
 | Coverage | **86%** (`--cov=src`) | — | `cli.py` (uvicorn bootstrap) is the main gap — exercised manually, not by the suite |
 | Authorization | 4 dedicated cross-user isolation tests | — | User B holding a real UUID for User A's stock/research note/setup/trade gets 404 on every route, never 200 or 403 |
 | CI | Ephemeral Postgres 16 service container | — | CI never touches the real Neon credentials; `alembic upgrade head` runs against the throwaway CI database as its own migration-path check |
+| Deployment | Live on Render (free tier) | — | Verified end to end post-deploy: login, `/stocks`, `/stocks/{ticker}/history` against the real database, and that unauthenticated requests correctly get 401 |
 
 All numbers above are from `uv run pytest --cov=src --cov-report=term-missing` against the
 real (migrated) Neon database, seeded via `scripts/seed.py`.

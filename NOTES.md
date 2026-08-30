@@ -110,4 +110,6 @@ Keep it rough. Rough is the point.
       done: `TradeSetup.research_note_id` is a nullable FK, used in the seed data
 - [x] Docker: image builds and runs correctly against real Neon data (see the `uv run`
       CMD fix above) — verified login + `/stocks` from inside the container.
-- [ ] Not deployed yet (Render/Fly.io) — SETUP.md Group 3.
+- [x] Deployed to Render (free tier): https://fastapi-service-alx5.onrender.com — verified
+      login, `/stocks`, `/stocks/{ticker}/history`, and 401-on-unauthenticated against the
+      live instance. Cold start ~30s after idle sleep, ~0.8s warm.
