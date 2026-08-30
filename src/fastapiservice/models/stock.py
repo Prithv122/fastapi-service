@@ -2,8 +2,8 @@
 
 import uuid
 
-from sqlalchemy import ForeignKey, String, UniqueConstraint
 from sqlalchemy import Enum as SAEnum
+from sqlalchemy import ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from ..database import Base

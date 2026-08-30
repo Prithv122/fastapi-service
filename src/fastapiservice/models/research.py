@@ -47,9 +47,7 @@ class BrokerageCall(Base, IDMixin, TimestampMixin):
     __tablename__ = "brokerage_calls"
 
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), index=True)
-    research_note_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("research_notes.id"), index=True
-    )
+    research_note_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("research_notes.id"), index=True)
 
     broker: Mapped[str] = mapped_column(String(128))
     rating: Mapped[str] = mapped_column(String(64))

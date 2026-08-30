@@ -9,10 +9,10 @@ from .user import User
 
 __all__ = [
     "Base",
-    "User",
-    "Stock",
-    "ResearchNote",
     "BrokerageCall",
-    "TradeSetup",
+    "ResearchNote",
+    "Stock",
     "Trade",
+    "TradeSetup",
+    "User",
 ]
