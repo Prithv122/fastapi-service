@@ -9,6 +9,23 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql+psycopg://ci:ci@localhost:5432/ci
+      JWT_SECRET_KEY: ci-test-secret-key-not-for-production-use
     steps:
       - uses: actions/checkout@v4
 
@@ -27,6 +44,9 @@ jobs:
         run: |
           uv run ruff check .
           uv run ruff format --check .
+
+      - name: Run migrations against the ephemeral CI database
+        run: uv run alembic upgrade head
 
       - name: Test
         run: uv run pytest --cov=src --cov-report=term-missing
