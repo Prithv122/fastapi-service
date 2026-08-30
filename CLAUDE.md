@@ -6,9 +6,11 @@ Root rules in `../CLAUDE.md` apply. This file is project-specific only — keep 
 
 ## What this is
 
-Production FastAPI service — layered architecture, Pydantic v2, SQLAlchemy 2.0 + Alembic,
-Neon Postgres, JWT auth, pytest + httpx, Docker, CI, deployed. The most reusable backend
-project in the catalogue.
+**Personal Indian Equity Research & Swing-Trade Journal API.** Multi-user REST API for
+tracking NSE stock research, brokerage calls, trade setups, and trades. Domain modeled on
+the user's own real workflow (Notion deep-dive tracker + Zerodha/Groww holdings), with
+invented seed data. Not a trading platform: no broker integration, no live prices, no
+execution, no AI recommendations.
 
 ## Stack
 
@@ -21,6 +23,16 @@ Docker · GitHub Actions · uv.
 - [ ] Layered FastAPI service backed by Neon Postgres, JWT auth, tested, containerized,
       deployed (`CATALOG.md` C2)
 - [ ] Ship gate passes (`/ship`)
+
+## Key domain decisions
+
+- **ResearchNote is append-only** — a refresh creates a new row, never edits a prior one.
+  `GET /stocks/{ticker}/history` surfaces the chronological call history.
+- **Multi-user, strictly isolated** — every Stock/ResearchNote/TradeSetup/Trade is owned by
+  a user; cross-user access must 404, not 403 (don't confirm the object exists).
+- **All money/price fields are `Decimal`**, never `float`.
+- Async SQLAlchemy 2.0 on the psycopg 3 driver — one driver for both the async app engine
+  and Alembic's sync migration runner.
 
 ## Project-specific notes
 
