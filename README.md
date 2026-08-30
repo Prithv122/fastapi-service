@@ -93,6 +93,18 @@ uv run fastapi-service --reload
 Then open `http://127.0.0.1:8000/docs` for interactive API docs. Requires a free
 [Neon](https://neon.tech) Postgres database (`DATABASE_URL`, pooled connection string).
 
+**With Docker:**
+
+```bash
+docker build -t fastapi-service .
+docker run -p 8000:8000 --env-file .env fastapi-service
+```
+
+**Deployment:** `render.yaml` defines a free-tier Render web service built from the
+Dockerfile (`DATABASE_URL` and `JWT_SECRET_KEY` are set as dashboard secrets, never
+committed). The container reads its listen port from Render's `$PORT` env var, falling
+back to 8000 for local `docker run`.
+
 ## 7. What I'd change at 100× scale
 
 At real multi-user scale, the first thing to break is the append-only `research_notes`
