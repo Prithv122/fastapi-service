@@ -77,6 +77,18 @@ Keep it rough. Rough is the point.
 | Classic asyncpg (app) + psycopg2 (Alembic) driver split | Two drivers for one project; psycopg 3 supports both sync and async natively, so Alembic and the app share one driver |
 | `float` for prices/P&L | Rounding errors on money; `Decimal` throughout instead |
 
+### 2026-08-30 — CI caught a stale local ruff cache
+- **Broke**: first push's CI run failed on `ruff check` (unsorted `__all__` in
+  `models/__init__.py`, unsorted imports in `models/setup.py` and `models/stock.py`) even
+  though every local `ruff check .` during the build had reported "All checks passed!".
+  **Cause**: `.ruff_cache/` (gitignored, machine-local) had cached a clean result for those
+  three files from earlier in the session and never re-flagged them, even across a config
+  change (adding `ignore = ["B008"]`) that should have invalidated it. **Fixed by** deleting
+  `.ruff_cache` and re-running — the real, uncached state had 3 genuine violations. **Learned**:
+  a clean local lint run late in a long session isn't proof of a clean *file* — CI's fresh
+  environment is the actual source of truth, which is exactly why it's a separate gate and
+  not just "trust the last local check."
+
 ## Open questions
 
 - [x] Confirm real Neon connection string is in `.env` before running the first migration
