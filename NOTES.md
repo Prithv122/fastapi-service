@@ -89,6 +89,20 @@ Keep it rough. Rough is the point.
   environment is the actual source of truth, which is exactly why it's a separate gate and
   not just "trust the last local check."
 
+### 2026-08-30 — Docker: `uv run` at container CMD re-syncs dev deps on every start
+- **Tried**: `CMD ["uv", "run", "uvicorn", ...]` in the Dockerfile, after a multi-stage
+  `uv sync --frozen --no-dev` build. **Broke** (quietly, not a crash): the container's own
+  logs showed `Downloading ruff (9.8MiB)` and package installs on *every* `docker run`,
+  even though the image was supposedly already fully built. `uv run` reconciles the
+  environment against pyproject's declared dependency-groups by default, regardless of the
+  `--no-dev` used at build time — it doesn't know the image was built frozen-without-dev,
+  so it "helpfully" installs the dev group back at runtime. Defeats the point of a
+  multi-stage build and would fail outright with no network access to PyPI at runtime.
+  **Fixed by** putting `/app/.venv/bin` on `PATH` and calling `uvicorn` directly in `CMD`,
+  bypassing `uv run` (and any sync check) entirely at container start. Verified clean logs
+  after the fix (no downloads, immediate `Uvicorn running`), then re-verified the full
+  request path against real Neon data (login, `/stocks`) from inside the running container.
+
 ## Open questions
 
 - [x] Confirm real Neon connection string is in `.env` before running the first migration
