@@ -12,6 +12,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
+from sqlalchemy import select
+
 import fastapiservice  # noqa: F401  (applies the Windows event-loop fix on import)
 from fastapiservice.database import async_session_factory, engine
 from fastapiservice.models import BrokerageCall, ResearchNote, Stock, Trade, TradeSetup, User
@@ -31,6 +33,11 @@ DEMO_PASSWORD = "demo-password-1234"
 
 async def seed() -> None:
     async with async_session_factory() as session:
+        existing = await session.scalar(select(User).where(User.email == DEMO_EMAIL))
+        if existing is not None:
+            print(f"Demo user {DEMO_EMAIL} already exists (id={existing.id}); skipping seed.")
+            return
+
         user = User(email=DEMO_EMAIL, hashed_password=hash_password(DEMO_PASSWORD))
         session.add(user)
         await session.flush()

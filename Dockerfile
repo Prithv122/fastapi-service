@@ -15,4 +15,8 @@ RUN uv sync --frozen --no-dev
 
 EXPOSE 8000
 
-CMD ["uv", "run", "uvicorn", "fastapiservice.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Call uvicorn from the already-installed venv directly, rather than "uv run uvicorn" --
+# uv run re-syncs against pyproject's dependency-groups on every invocation, which pulls
+# in dev-only tools like ruff at container startup even though `--no-dev` was used above.
+ENV PATH="/app/.venv/bin:$PATH"
+CMD ["uvicorn", "fastapiservice.main:app", "--host", "0.0.0.0", "--port", "8000"]
