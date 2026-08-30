@@ -108,6 +108,6 @@ Keep it rough. Rough is the point.
 - [x] Confirm real Neon connection string is in `.env` before running the first migration
 - [x] Decide whether `TradeSetup` and `ResearchNote` should cross-reference each other —
       done: `TradeSetup.research_note_id` is a nullable FK, used in the seed data
-- [ ] Docker Desktop wasn't running during the build session — Dockerfile is written but
-      not yet built/run. Confirm before `/ship`.
+- [x] Docker: image builds and runs correctly against real Neon data (see the `uv run`
+      CMD fix above) — verified login + `/stocks` from inside the container.
 - [ ] Not deployed yet (Render/Fly.io) — SETUP.md Group 3.
