@@ -19,4 +19,8 @@ EXPOSE 8000
 # uv run re-syncs against pyproject's dependency-groups on every invocation, which pulls
 # in dev-only tools like ruff at container startup even though `--no-dev` was used above.
 ENV PATH="/app/.venv/bin:$PATH"
-CMD ["uvicorn", "fastapiservice.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# Shell form (not exec-form JSON) so $PORT is actually expanded -- Render (and most PaaS
+# Docker runners) assign the listen port via this env var rather than honoring EXPOSE.
+# Defaults to 8000 for a plain `docker run` with no PORT set.
+CMD uvicorn fastapiservice.main:app --host 0.0.0.0 --port ${PORT:-8000}
