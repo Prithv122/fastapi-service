@@ -22,7 +22,7 @@ Docker · GitHub Actions · uv.
 
 - [ ] Layered FastAPI service backed by Neon Postgres, JWT auth, tested, containerized,
       deployed (`CATALOG.md` C2)
-- [ ] Ship gate passes (`/ship`)
+- [ ] Ship gate passes
 
 ## Key domain decisions
 
